@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLEANSY — Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:       #5188cc;
+    --blue-light: #c5d9f3;
+    --blue-dark:  #0e2f5f;
+    --blue-pale:  #e1edfc;
+    --white:      #ffffff;
+    --black:      #000000;
+    --navy:       #021828;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--white);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 1.5px solid var(--blue-pale);
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    transition: box-shadow 0.3s;
+  }
+
+  header.scrolled { box-shadow: 0 4px 24px rgba(2,24,40,0.08); }
+
+  .nav-left {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .nav-left a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--navy);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+
+  .nav-left a:hover { color: var(--blue); }
+  .nav-left a.active { color: var(--blue); border-bottom: 2px solid var(--blue); padding-bottom: 2px; }
+
+  .logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--blue-dark);
+    text-decoration: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .nav-right a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-right a:hover { color: var(--blue); }
+
+  .nav-right .icon {
+    width: 20px; height: 20px;
+    stroke: var(--navy); fill: none; stroke-width: 1.8;
+    cursor: pointer; transition: stroke 0.2s;
+  }
+  .nav-right .icon:hover { stroke: var(--blue); }
+
+  .cart-wrap { position: relative; cursor: pointer; }
+  .cart-count {
+    position: absolute;
+    top: -6px; right: -8px;
+    background: var(--blue);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .nav-right .divider { width: 1px; height: 20px; background: var(--blue-light); }
+
+  /* ── SHOP HERO ── */
+  .shop-hero {
+    background: var(--blue-dark);
+    padding: 72px 80px 60px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .shop-hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(81,136,204,0.1);
+  }
+
+  .shop-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(197,217,243,0.12);
+  }
+
+  .hero-left { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 2px; background: var(--blue); }
+
+  .shop-hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(56px, 7vw, 100px);
+    line-height: 0.88;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .shop-hero h1 em { font-style: italic; color: var(--blue-light); }
+
+  .shop-hero p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--blue-light);
+    opacity: 0.75;
+    max-width: 420px;
+  }
+
+  .hero-right {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+  }
+
+  .hero-stat {
+    text-align: center;
+    border: 1px solid rgba(197,217,243,0.2);
+    padding: 16px 24px;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .hero-stat .num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 36px;
+    color: var(--white);
+    line-height: 1;
+    display: block;
+  }
+
+  .hero-stat .lbl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    opacity: 0.7;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    padding: 20px 80px;
+    border-bottom: 1.5px solid var(--blue-pale);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: sticky;
+    top: 64px;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .filter-tab {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy);
+    padding: 8px 18px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+    background: transparent;
+    opacity: 0.5;
+  }
+
+  .filter-tab:hover { opacity: 0.8; border-color: var(--blue-light); }
+  .filter-tab.active { border-color: var(--blue-dark); color: var(--blue-dark); opacity: 1; }
+
+  .filter-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    opacity: 0.5;
+  }
+
+  .item-count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  /* ── PRODUCT GRID ── */
+  .shop-grid {
+    padding: 60px 80px 100px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  /* ── PRODUCT CARD ── */
+  .product-card {
+    position: relative;
+    background: var(--white);
+    cursor: pointer;
+    /* scroll-driven parallax handled by JS */
+    opacity: 0;
+    transform: translateY(40px) scale(0.97);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+                transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    will-change: transform, opacity;
+  }
+
+  .product-card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* distance-based fade/scale driven by IntersectionObserver ratio */
+  .product-card.exiting {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+
+  .product-card:hover .card-img-wrap img { transform: scale(1.06); }
+  .product-card:hover .card-overlay { opacity: 1; }
+  .product-card:hover .quick-add { transform: translateY(0); }
+
+  .card-img-wrap {
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: var(--blue-pale);
+    position: relative;
+  }
+
+  .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(2,24,40,0.28);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .quick-add {
+    width: 100%;
+    background: var(--white);
+    color: var(--navy);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 16px 24px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), background 0.2s;
+  }
+
+  .quick-add:hover { background: var(--blue-dark); color: var(--white); }
+
+  /* badge */
+  .card-badge {
+    position: absolute;
+    top: 16px; left: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    z-index: 2;
+  }
+  .badge-new  { background: var(--blue-dark); color: var(--white); }
+  .badge-eco  { background: var(--blue); color: var(--white); }
+  .badge-staff { background: var(--navy); color: var(--white); }
+
+  .card-body {
+    padding: 20px 4px 28px;
+    border-bottom: 1.5px solid var(--blue-pale);
+  }
+
+  .card-meta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  .card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.05;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--navy);
+    opacity: 0.5;
+    margin-bottom: 14px;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    color: var(--blue-dark);
+  }
+
+  .color-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .cdot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(2,24,40,0.15);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .cdot:hover { transform: scale(1.3); }
+
+  /* ── IMPACT STRIP ── */
+  .impact-strip {
+    background: var(--blue-pale);
+    padding: 40px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    border-top: 2px solid var(--blue-light);
+  }
+
+  .impact-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .impact-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .impact-item strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue-dark);
+    display: block;
+  }
+
+  .impact-item span {
+    font-size: 12px;
+    color: var(--navy);
+    opacity: 0.6;
+  }
+
+  /* ── CART DRAWER ── */
+  .cart-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(2,24,40,0.4);
+    z-index: 400;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .cart-backdrop.open { opacity: 1; pointer-events: all; }
+
+  .cart-drawer {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 400px;
+    background: var(--white);
+    z-index: 500;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    display: flex;
+    flex-direction: column;
+  }
+  .cart-drawer.open { transform: translateX(0); }
+
+  .cart-header {
+    padding: 24px 28px;
+    border-bottom: 1.5px solid var(--blue-pale);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cart-header h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+  }
+
+  .cart-close {
+    background: none; border: none; cursor: pointer;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .cart-close svg { stroke: var(--navy); fill: none; stroke-width: 2; }
+  .cart-close:hover svg { stroke: var(--blue); }
+
+  .cart-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+  }
+
+  .cart-empty {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .cart-empty .empty-icon { font-size: 48px; margin-bottom: 16px; }
+
+  .cart-empty p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--navy);
+    opacity: 0.4;
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 14px;
+    align-items: start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--blue-pale);
+  }
+
+  .cart-item img {
+    width: 80px; height: 80px;
+    object-fit: cover;
+    object-position: center top;
+    background: var(--blue-pale);
+  }
+
+  .cart-item-info .item-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+
+  .cart-item-info .item-variant {
+    font-size: 11px; color: var(--navy); opacity: 0.5;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-family: 'Barlow Condensed', sans-serif;
+    margin-bottom: 10px;
+  }
+
+  .qty-controls {
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .qty-btn {
+    width: 24px; height: 24px;
+    border: 1px solid var(--blue-light);
+    background: none; cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .qty-btn:hover { background: var(--blue-pale); border-color: var(--blue); }
+
+  .qty-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--navy);
+    min-width: 20px; text-align: center;
+  }
+
+  .cart-item-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: var(--blue-dark);
+    text-align: right;
+  }
+
+  .remove-item {
+    background: none; border: none; cursor: pointer;
+    font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Barlow Condensed', sans-serif;
+    color: var(--navy); opacity: 0.3;
+    margin-top: 6px; display: block;
+    transition: opacity 0.2s, color 0.2s;
+    text-align: left;
+  }
+  .remove-item:hover { opacity: 1; color: #c0392b; }
+
+  .cart-footer {
+    padding: 20px 28px 32px;
+    border-top: 1.5px solid var(--blue-pale);
+  }
+
+  .cart-total {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .cart-total span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy); opacity: 0.6;
+  }
+
+  .cart-total strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--navy);
+  }
+
+  .impact-note {
+    font-size: 12px; color: var(--blue-dark); opacity: 0.7;
+    line-height: 1.5; margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--blue-pale);
+    font-family: 'Barlow', sans-serif;
+  }
+
+  .btn-checkout {
+    display: block; width: 100%;
+    background: var(--blue-dark);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 18px;
+    border: none; cursor: pointer;
+    text-align: center;
+    transition: background 0.2s;
+  }
+  .btn-checkout:hover { background: var(--blue); }
+
+  /* ── SIZE MODAL ── */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(2,24,40,0.5);
+    z-index: 600;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--white);
+    width: 480px; max-width: 90vw;
+    transform: scale(0.92) translateY(20px);
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    overflow: hidden;
+  }
+  .modal-backdrop.open .modal { transform: scale(1) translateY(0); }
+
+  .modal-img {
+    width: 100%; height: 280px;
+    object-fit: cover; object-position: center top;
+    background: var(--blue-pale);
+    display: block;
+  }
+
+  .modal-body { padding: 28px 28px 32px; }
+
+  .modal-body .m-cat {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 6px;
+  }
+
+  .modal-body .m-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 28px;
+    text-transform: uppercase; color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .modal-body .m-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 22px;
+    color: var(--blue-dark); margin-bottom: 20px;
+  }
+
+  .size-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--navy); opacity: 0.6; margin-bottom: 10px;
+  }
+
+  .size-options {
+    display: flex; gap: 8px; margin-bottom: 20px;
+  }
+
+  .size-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    width: 44px; height: 44px;
+    border: 1.5px solid var(--blue-light);
+    background: none; cursor: pointer; color: var(--navy);
+    transition: all 0.2s;
+  }
+  .size-btn:hover { border-color: var(--blue-dark); }
+  .size-btn.selected { background: var(--blue-dark); color: var(--white); border-color: var(--blue-dark); }
+
+  .color-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--navy); opacity: 0.6; margin-bottom: 10px;
+  }
+
+  .color-options {
+    display: flex; gap: 10px; margin-bottom: 24px;
+    align-items: center;
+  }
+
+  .color-opt {
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--navy); opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .color-opt:hover, .color-opt.selected { opacity: 1; }
+  .color-opt .cswatch {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 1.5px solid rgba(2,24,40,0.2);
+    transition: transform 0.2s;
+  }
+  .color-opt.selected .cswatch { transform: scale(1.2); border-color: var(--blue-dark); }
+
+  .modal-add-btn {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%;
+    background: var(--blue-dark); color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 16px 24px; border: none; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .modal-add-btn:hover { background: var(--blue); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 80px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--blue-dark); color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 12px 24px; z-index: 700;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── BACK HOME BTN ── */
+  .back-home {
+    position: fixed; bottom: 32px; right: 32px;
+    z-index: 300;
+    width: 52px; height: 52px;
+    background: var(--blue-dark); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(2,24,40,0.25);
+    transition: background 0.25s, transform 0.25s;
+  }
+  .back-home:hover { background: var(--blue); transform: translateY(-3px); }
+  .back-home svg { width: 20px; height: 20px; stroke: var(--white); fill: none; stroke-width: 2; }
+  .back-home::before {
+    content: 'Back to home';
+    position: absolute; right: calc(100% + 10px); top: 50%;
+    transform: translateY(-50%);
+    background: var(--navy); color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 12px; white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .back-home:hover::before { opacity: 1; }
+
+  /* responsive */
+  @media (max-width: 1000px) {
+    .shop-grid { grid-template-columns: repeat(2, 1fr); padding: 40px 32px 80px; }
+    .shop-hero, .filter-bar, .impact-strip { padding-left: 32px; padding-right: 32px; }
+    header { padding: 0 20px; }
+  }
+  @media (max-width: 640px) {
+    .shop-grid { grid-template-columns: 1fr; }
+    .cart-drawer { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="main-header">
+  <nav class="nav-left">
+    <a href="cleansy-web.html">Home</a>
+    <a href="cleansy-learn.html">Learn More</a>
+    <a href="cleansy-shop.html" class="active">Shop</a>
+  </nav>
+
+  <a href="cleansy-web.html" class="logo">
+    CLEANSY
+    <img src="assets/logo/Gemini_Generated_Image_pllrorpllrorpllr.png" alt="Cleansy logo">
+  </a>
+
+  <div class="nav-right">
+    <a href="#">ENGLISH <span style="font-size:9px">▾</span></a>
+    <div class="divider"></div>
+    <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+    <svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <div class="cart-wrap" id="cart-toggle">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-count" id="cart-count">0</span>
+    </div>
+  </div>
+</header>
+
+<!-- SHOP HERO -->
+<section class="shop-hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Sustainable Fashion</div>
+    <h1>Shop<br><em>Cleansy</em></h1>
+    <p>Every item you buy removes plastic from our oceans and funds the next beach cleanup. Wear the mission.</p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat">
+      <span class="num">5</span>
+      <span class="lbl">Products</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">1kg</span>
+      <span class="lbl">Ocean plastic per purchase</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">100%</span>
+      <span class="lbl">Organic materials</span>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all">All</button>
+    <button class="filter-tab" data-filter="apparel">Apparel</button>
+    <button class="filter-tab" data-filter="accessories">Accessories</button>
+    <button class="filter-tab" data-filter="staff">Staff</button>
+  </div>
+  <div class="filter-right">
+    <span class="item-count" id="visible-count">5 items</span>
+  </div>
+</div>
+
+<!-- PRODUCT GRID -->
+<section class="shop-grid" id="shop-grid">
+
+  <!-- PRODUCT 1: Tote Bag Natural -->
+  <div class="product-card" data-category="accessories" data-id="1">
+    <div class="card-img-wrap">
+      <span class="card-badge badge-eco">Eco</span>
+      <img src="assets/merch/bbag.jpeg" alt="Tote Bag Natural — Make Waves Not Waste">
+      <div class="card-overlay">
+        <button class="quick-add" onclick="openModal(1)">
+          Select size <span>+</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-meta">Accessories · Tote Bag</div>
+      <div class="card-name">Make Waves<br>Not Waste</div>
+      <div class="card-desc">100% organic cotton canvas. "Make Waves Not Waste" print on the front, Cleansy marine circle on the back.</div>
+      <div class="card-footer">
+        <span class="card-price">€14</span>
+        <div class="color-dots">
+          <div class="cdot" style="background:#F5F0E8;" title="Natural"></div>
+          <div class="cdot" style="background:#5188cc;" title="Blue"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 2: Tote Bag Blue -->
+  <div class="product-card" data-category="accessories" data-id="2">
+    <div class="card-img-wrap">
+      <span class="card-badge badge-eco">Eco</span>
+      <img src="assets/merch/bblanca.jpeg" alt="Tote Bag Blue — Make Waves Not Waste">
+      <div class="card-overlay">
+        <button class="quick-add" onclick="openModal(2)">
+          Select size <span>+</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-meta">Accessories · Tote Bag</div>
+      <div class="card-name">Make Waves<br>Not Waste — Blue</div>
+      <div class="card-desc">Same organic cotton canvas in bold Cleansy blue. White slogan print front, white marine circle back.</div>
+      <div class="card-footer">
+        <span class="card-price">€14</span>
+        <div class="color-dots">
+          <div class="cdot" style="background:#F5F0E8;" title="Natural"></div>
+          <div class="cdot" style="background:#5188cc;" title="Blue"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 3: Oversized Tee -->
+  <div class="product-card" data-category="apparel" data-id="3">
+    <div class="card-img-wrap">
+      <span class="card-badge badge-new">New</span>
+      <img src="assets/merch/bshirt.jpeg" alt="Cleansy Oversized Tee">
+      <div class="card-overlay">
+        <button class="quick-add" onclick="openModal(3)">
+          Select size <span>+</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-meta">Apparel · T-Shirt</div>
+      <div class="card-name">Oversized<br>Ocean Tee</div>
+      <div class="card-desc">Relaxed oversized fit in heavyweight organic cotton. White Cleansy circle logo on chest and full back print.</div>
+      <div class="card-footer">
+        <span class="card-price">€28</span>
+        <div class="color-dots">
+          <div class="cdot" style="background:#0e2f5f;" title="Navy"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 4: Regular Tee -->
+  <div class="product-card" data-category="apparel" data-id="4">
+    <div class="card-img-wrap">
+      <img src="assets/merch/bshirt.jpeg" alt="Cleansy Regular Tee">
+      <div class="card-overlay">
+        <button class="quick-add" onclick="openModal(4)">
+          Select size <span>+</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-meta">Apparel · T-Shirt</div>
+      <div class="card-name">Classic<br>Ocean Tee</div>
+      <div class="card-desc">Standard fit everyday tee in organic cotton. Subtle white Cleansy circle badge on the left chest.</div>
+      <div class="card-footer">
+        <span class="card-price">€22</span>
+        <div class="color-dots">
+          <div class="cdot" style="background:#0e2f5f;" title="Navy"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 5: Staff Vest -->
+  <div class="product-card" data-category="staff" data-id="5">
+    <div class="card-img-wrap">
+      <span class="card-badge badge-staff">Staff</span>
+      <img src="assets/merch/wchaleco.jpeg" alt="Cleansy Staff Vest">
+      <div class="card-overlay">
+        <button class="quick-add" onclick="openModal(5)">
+          Select size <span>+</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-meta">Staff · Vest</div>
+      <div class="card-name">Volunteer<br>Staff Vest</div>
+      <div class="card-desc">Multi-pocket utility vest with navy contrast trim and reflective strips. Cleansy logo + STAFF text front and back.</div>
+      <div class="card-footer">
+        <span class="card-price">€45</span>
+        <div class="color-dots">
+          <div class="cdot" style="background:#ffffff;border:1.5px solid #c5d9f3;" title="White"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- IMPACT STRIP -->
+<div class="impact-strip">
+  <div class="impact-item">
+    <div class="impact-icon">🌊</div>
+    <div>
+      <strong>1 kg plastic removed</strong>
+      <span>per order placed</span>
+    </div>
+  </div>
+  <div class="impact-item">
+    <div class="impact-icon">♻️</div>
+    <div>
+      <strong>100% organic cotton</strong>
+      <span>certified materials only</span>
+    </div>
+  </div>
+  <div class="impact-item">
+    <div class="impact-icon">🚚</div>
+    <div>
+      <strong>Free shipping</strong>
+      <span>on orders over €50 in Spain</span>
+    </div>
+  </div>
+  <div class="impact-item">
+    <div class="impact-icon">🐢</div>
+    <div>
+      <strong>Species protection</strong>
+      <span>10% of proceeds to marine conservation</span>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="cart-backdrop" id="cart-backdrop" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close" onclick="closeCart()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="cart-body" id="cart-body">
+    <div class="cart-empty">
+      <div class="empty-icon">🛒</div>
+      <p>Your cart is empty</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cart-total-val">€0</strong>
+    </div>
+    <div class="impact-note">
+      🌊 This order will remove <strong id="cart-kg">0 kg</strong> of plastic from the ocean.
+    </div>
+    <button class="btn-checkout">Checkout →</button>
+  </div>
+</div>
+
+<!-- SIZE / ADD MODAL -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="handleModalBackdropClick(event)">
+  <div class="modal" id="modal">
+    <img class="modal-img" id="modal-img" src="" alt="">
+    <div class="modal-body">
+      <div class="m-cat" id="modal-cat"></div>
+      <div class="m-name" id="modal-name"></div>
+      <div class="m-price" id="modal-price"></div>
+
+      <div id="size-section">
+        <div class="size-label">Size</div>
+        <div class="size-options" id="size-options"></div>
+      </div>
+
+      <div id="color-section">
+        <div class="color-label">Color</div>
+        <div class="color-options" id="color-options"></div>
+      </div>
+
+      <button class="modal-add-btn" id="modal-add-btn" onclick="addToCart()">
+        Add to Cart
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- BACK HOME -->
+<a href="cleansy-web.html" class="back-home" title="Back to Home">
+  <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+</a>
+
+<script>
+// ── PRODUCT DATA ──────────────────────────────────
+const PRODUCTS = {
+  1: {
+    name: "Make Waves Not Waste",
+    cat: "Accessories · Tote Bag",
+    price: 14,
+    img: "assets/merch/bbag.jpeg",
+    sizes: ["One Size"],
+    colors: [
+      { name: "Natural", hex: "#F5F0E8" },
+      { name: "Blue",    hex: "#5188cc" }
+    ]
+  },
+  2: {
+    name: "Make Waves Not Waste — Blue",
+    cat: "Accessories · Tote Bag",
+    price: 14,
+    img: "assets/merch/bblanca.jpeg",
+    sizes: ["One Size"],
+    colors: [
+      { name: "Natural", hex: "#F5F0E8" },
+      { name: "Blue",    hex: "#5188cc" }
+    ]
+  },
+  3: {
+    name: "Oversized Ocean Tee",
+    cat: "Apparel · T-Shirt",
+    price: 28,
+    img: "assets/merch/bshirt.jpeg",
+    sizes: ["XS","S","M","L","XL","XXL"],
+    colors: [{ name: "Navy", hex: "#0e2f5f" }]
+  },
+  4: {
+    name: "Classic Ocean Tee",
+    cat: "Apparel · T-Shirt",
+    price: 22,
+    img: "assets/merch/bshirt.jpeg",
+    sizes: ["XS","S","M","L","XL","XXL"],
+    colors: [{ name: "Navy", hex: "#0e2f5f" }]
+  },
+  5: {
+    name: "Volunteer Staff Vest",
+    cat: "Staff · Vest",
+    price: 45,
+    img: "assets/merch/wchaleco.jpeg",
+    sizes: ["S","M","L","XL","XXL"],
+    colors: [{ name: "White", hex: "#ffffff" }]
+  }
+};
+
+// ── CART ─────────────────────────────────────────
+let cart = [];
+let currentProductId = null;
+let selectedSize  = null;
+let selectedColor = null;
+
+function updateCartUI() {
+  const count = cart.reduce((a, i) => a + i.qty, 0);
+  document.getElementById('cart-count').textContent = count;
+
+  const body   = document.getElementById('cart-body');
+  const footer = document.getElementById('cart-footer');
+
+  if (cart.length === 0) {
+    body.innerHTML = `<div class="cart-empty"><div class="empty-icon">🛒</div><p>Your cart is empty</p></div>`;
+    footer.style.display = 'none';
+    return;
+  }
+
+  footer.style.display = '';
+  let total = 0;
+  body.innerHTML = cart.map((item, idx) => {
+    total += item.price * item.qty;
+    return `
+      <div class="cart-item">
+        <img src="${item.img}" alt="${item.name}">
+        <div class="cart-item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-variant">${item.color} · ${item.size}</div>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+          </div>
+          <button class="remove-item" onclick="removeItem(${idx})">Remove</button>
+        </div>
+        <div class="cart-item-price">€${item.price * item.qty}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('cart-total-val').textContent = `€${total}`;
+  document.getElementById('cart-kg').textContent = `${cart.reduce((a,i)=>a+i.qty,0)} kg`;
+}
+
+function changeQty(idx, delta) {
+  cart[idx].qty = Math.max(1, cart[idx].qty + delta);
+  updateCartUI();
+}
+
+function removeItem(idx) {
+  cart.splice(idx, 1);
+  updateCartUI();
+}
+
+function openCart() {
+  document.getElementById('cart-backdrop').classList.add('open');
+  document.getElementById('cart-drawer').classList.add('open');
+}
+
+function closeCart() {
+  document.getElementById('cart-backdrop').classList.remove('open');
+  document.getElementById('cart-drawer').classList.remove('open');
+}
+
+document.getElementById('cart-toggle').addEventListener('click', () => {
+  const isOpen = document.getElementById('cart-drawer').classList.contains('open');
+  isOpen ? closeCart() : openCart();
+});
+
+// ── MODAL ────────────────────────────────────────
+function openModal(id) {
+  currentProductId = id;
+  selectedSize  = null;
+  selectedColor = null;
+  const p = PRODUCTS[id];
+
+  document.getElementById('modal-img').src   = p.img;
+  document.getElementById('modal-cat').textContent   = p.cat;
+  document.getElementById('modal-name').textContent  = p.name;
+  document.getElementById('modal-price').textContent = `€${p.price}`;
+
+  // sizes
+  const sizeOpts = document.getElementById('size-options');
+  sizeOpts.innerHTML = p.sizes.map(s =>
+    `<button class="size-btn" onclick="selectSize(this,'${s}')">${s}</button>`
+  ).join('');
+  if (p.sizes.length === 1) {
+    selectedSize = p.sizes[0];
+    sizeOpts.querySelector('.size-btn').classList.add('selected');
+  }
+
+  // colors
+  const colorOpts = document.getElementById('color-options');
+  colorOpts.innerHTML = p.colors.map((c, i) =>
+    `<div class="color-opt${i===0?' selected':''}" onclick="selectColor(this,'${c.name}')">
+       <div class="cswatch" style="background:${c.hex}"></div>
+       ${c.name}
+     </div>`
+  ).join('');
+  selectedColor = p.colors[0].name;
+
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function selectSize(el, size) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSize = size;
+}
+
+function selectColor(el, color) {
+  document.querySelectorAll('.color-opt').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedColor = color;
+}
+
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+}
+
+function handleModalBackdropClick(e) {
+  if (e.target === document.getElementById('modal-backdrop')) closeModal();
+}
+
+function addToCart() {
+  if (!selectedSize) { showToast('Please select a size'); return; }
+  const p = PRODUCTS[currentProductId];
+  const existing = cart.find(i => i.id === currentProductId && i.size === selectedSize && i.color === selectedColor);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ id: currentProductId, name: p.name, price: p.price, img: p.img, size: selectedSize, color: selectedColor, qty: 1 });
+  }
+  closeModal();
+  updateCartUI();
+  showToast(`${p.name} added to cart 🛒`);
+
+  // bounce cart icon
+  const cnt = document.getElementById('cart-count');
+  cnt.style.transform = 'scale(1.6)';
+  setTimeout(() => cnt.style.transform = '', 300);
+}
+
+// ── TOAST ────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── FILTER TABS ──────────────────────────────────
+document.querySelectorAll('.filter-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const filter = tab.dataset.filter;
+    let visible = 0;
+    document.querySelectorAll('.product-card').forEach(card => {
+      const show = filter === 'all' || card.dataset.category === filter;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('visible-count').textContent = `${visible} item${visible !== 1 ? 's' : ''}`;
+  });
+});
+
+// ── SCROLL ANIMATIONS (enter + exit) ─────────────
+const cards = document.querySelectorAll('.product-card');
+
+// Stagger the initial entrance
+const entranceObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Card entering viewport from below: fade in
+      entry.target.classList.remove('exiting');
+      entry.target.classList.add('visible');
+    } else {
+      // Card leaving viewport
+      const rect = entry.target.getBoundingClientRect();
+      if (rect.top < 0) {
+        // scrolled past (top) — slide out up and shrink
+        entry.target.classList.add('exiting');
+        entry.target.classList.remove('visible');
+      } else {
+        // below viewport — reset to initial state
+        entry.target.classList.remove('visible', 'exiting');
+      }
+    }
+  });
+}, {
+  threshold: [0, 0.15],
+  rootMargin: '0px 0px -60px 0px'
+});
+
+// Stagger visibility on page load
+cards.forEach((card, i) => {
+  card.style.transitionDelay = `${i * 80}ms`;
+  entranceObserver.observe(card);
+});
+
+// ── HEADER SCROLL SHADOW ─────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+</script>
+</body>
+</html>
